@@ -26,7 +26,9 @@ $ cd Server/builed
 $ cmake ..
 $ make
 $ ./socket_app
+系统初始密码 username:2 pwd:22
 ```
+
 
 # 权限说明
 

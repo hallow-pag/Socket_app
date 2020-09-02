@@ -1,11 +1,14 @@
 [TOC]
 
+ <img src="https://github.com/hallow-pag/Socket_app/raw/master/src/7.png" style="zoom:80%;" />
+
 # 环境
 
 ```
 系统 Ubuntu 18
 环境 g++ 7.5
 数据库 sqlite3 
+编译工具 GNU Make 4.1 cmake version 3.10.2
 ```
 
 ## sqlite3 安装
@@ -31,6 +34,50 @@ $ ./socket_app
 系统初始密码 username:2 pwd:22
 ```
 
+# 技术说明
+
+MD5加密
+
+```
+用户密码采用md5加密
+MD5的全称是Message-Digest Algorithm，是Hash算法中的一种重要算法，具有单项加密、加密结果唯一、安全性能好等特点。MD5以512位分组来处理输入的信息，且每一分组又被划分为16个 32位子分组，经过了一系列的处理后 ，算法的输出由四个32位分组组成，将这四个32位分组级联后将生成一个128位散列值。
+```
+
+Epoll
+
+```
+epoll是Linux内核为处理大批量文件描述符而作了改进的poll，是Linux下多路复用IO接口select/poll的增强版本，它能显著提高程序在大量并发连接中只有少量活跃的情况下的系统CPU利用率。另一点原因就是获取事件的时候，它无须遍历整个被侦听的描述符集，只要遍历那些被内核IO事件异步唤醒而加入Ready队列的描述符集合就行了。epoll除了提供select/poll那种IO事件的水平触发（Level Triggered）外，还提供了边缘触发（Edge Triggered），这就使得用户空间程序有可能缓存IO状态，减少epoll_wait/epoll_pwait的调用，提高应用程序效率。
+```
+
+多线程
+
+```
+使用多线程使CPU利用率最大化。
+```
+
+# 异常的返回值
+
+```c
+#define System_Err 0    // 系统错误 0
+#define No_Log -1   // 未登录 -1
+#define NO_POWER -2 // 权限不足 -2
+#define Lack_Of_Parameter -3    // 缺少参数 -3
+#define Paramter_Err -4 // 参数错误 -4
+#define Err -5  // 未知错误 -5
+#define Cookie_Err -6   // cookie失效 -6
+#define Url_Err -7  // 路径错误 
+#define Pwd_Err -8 //密码错误
+#define Username_Err -9 //用户名错误
+#define Name_Repeat -10 //用户名重复
+#define Name_To_long -11 //用户名不规范
+#define pwd_No_Specification -12 //密码不规范
+```
+
+```
+参数过长
+请求头过长
+
+```
 
 # 权限说明
 
@@ -49,6 +96,15 @@ $ ./socket_app
 
 ```
 url地址:/login
+权限：0
+请求方式:GET
+参数: username(必填), pwd(必填)
+Exp:/login?username=1&pwd=1
+返回:
+1、是否成功（成功返回1，失败返回-1）， 2、中文信息 3、上次登录时间 4、上次登录地址
+{"return":1,"text":"登陆成功","on_time":"2020-08-09 09:32:05","on_addr":"120.229.60.56"}
+
+url地址:/lg
 权限：0
 请求方式:GET
 参数: username(必填), pwd(必填)
@@ -137,7 +193,6 @@ Exp:/deluser?id=1
 <img src="https://github.com/hallow-pag/Socket_app/raw/master/src/2.PNG" style="zoom: 80%;" />
 
 ```c
-
 	/* Linux版本号 */
     char os_version[20];
 
@@ -254,27 +309,8 @@ Exp:/showlog
 
 <img src="https://github.com/hallow-pag/Socket_app/raw/master/src/4.png" style="zoom:80%;" />
 
-# 异常的返回值
-
-```c
-#define System_Err 0    // 系统错误 0
-#define No_Log -1   // 未登录 -1
-#define NO_POWER -2 // 权限不足 -2
-#define Lack_Of_Parameter -3    // 缺少参数 -3
-#define Paramter_Err -4 // 参数错误 -4
-#define Err -5  // 未知错误 -5
-#define Cookie_Err -6   // cookie失效 -6
-#define Url_Err -7  // 路径错误 
-#define Pwd_Err -8 //密码错误
-#define Username_Err -9 //用户名错误
-#define Name_Repeat -10 //用户名重复
-#define Name_To_long -11 //用户名不规范
-#define pwd_No_Specification -12 //密码不规范
-```
-
 ```
 参数过长
 请求头过长
 
 ```
-

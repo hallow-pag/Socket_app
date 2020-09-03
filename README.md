@@ -54,6 +54,10 @@ epoll是Linux内核为处理大批量文件描述符而作了改进的poll，是
 ```
 使用多线程使CPU利用率最大化。
 ```
+JSON
+```
+使用主流的JSON格式方便前端调用并进行数据解析。
+```
 
 # 异常的返回值
 
@@ -106,7 +110,7 @@ Exp:/login?username=1&pwd=1
 
 url地址:/lg
 权限：0
-请求方式:GET
+请求方式:POST
 参数: username(必填), pwd(必填)
 Exp:/login?username=1&pwd=1
 返回:
